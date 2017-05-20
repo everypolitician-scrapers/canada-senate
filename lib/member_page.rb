@@ -34,11 +34,15 @@ class MemberPage < Scraped::HTML
   end
 
   field :twitter do
-    card_node('biography_card_details_social').css('a[href*=twitter]').text
+    social_network('twitter')
   end
 
   field :facebook do
-    card_node('biography_card_details_social').css('a[href*=facebook]').text
+    social_network('facebook')
+  end
+
+  field :instagram do
+    social_network('instagram')
   end
 
   field :website do
@@ -57,5 +61,9 @@ class MemberPage < Scraped::HTML
 
   def card_node(css_class)
     noko.xpath('//li[@class="%s"]' % css_class)
+  end
+
+  def social_network(url_part)
+    card_node('biography_card_details_social').css('a[href*=%s]/@href' % url_part).text
   end
 end
